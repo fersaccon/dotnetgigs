@@ -8,3 +8,13 @@ c:\Users\fer_s\Desktop\DotNetGigs\obj\Debug\netcoreapp2.0\DotNetGigs.AssemblyInf
 c:\Users\fer_s\Desktop\DotNetGigs\obj\Debug\netcoreapp2.0\DotNetGigs.AssemblyInfo.cs
 c:\Users\fer_s\Desktop\DotNetGigs\obj\Debug\netcoreapp2.0\DotNetGigs.dll
 c:\Users\fer_s\Desktop\DotNetGigs\obj\Debug\netcoreapp2.0\DotNetGigs.pdb
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\bin\Debug\netcoreapp2.0\DotNetGigs.deps.json
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\bin\Debug\netcoreapp2.0\DotNetGigs.runtimeconfig.json
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\bin\Debug\netcoreapp2.0\DotNetGigs.runtimeconfig.dev.json
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\bin\Debug\netcoreapp2.0\DotNetGigs.dll
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\bin\Debug\netcoreapp2.0\DotNetGigs.pdb
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\obj\Debug\netcoreapp2.0\DotNetGigs.csproj.CoreCompileInputs.cache
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\obj\Debug\netcoreapp2.0\DotNetGigs.AssemblyInfoInputs.cache
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\obj\Debug\netcoreapp2.0\DotNetGigs.AssemblyInfo.cs
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\obj\Debug\netcoreapp2.0\DotNetGigs.dll
+c:\Users\ferna\Documents\VSCode Projects\dotnetgigs\obj\Debug\netcoreapp2.0\DotNetGigs.pdb

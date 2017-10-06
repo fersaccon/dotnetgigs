@@ -12749,23 +12749,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fer_s\\.nuget\\packages\\": {},
+    "C:\\Users\\ferna\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\fer_s\\Desktop\\DotNetGigs\\DotNetGigs.csproj",
+      "projectUniqueName": "c:\\Users\\ferna\\Documents\\VSCode Projects\\dotnetgigs\\DotNetGigs.csproj",
       "projectName": "DotNetGigs",
-      "projectPath": "c:\\Users\\fer_s\\Desktop\\DotNetGigs\\DotNetGigs.csproj",
-      "packagesPath": "C:\\Users\\fer_s\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\fer_s\\Desktop\\DotNetGigs\\obj\\",
+      "projectPath": "c:\\Users\\ferna\\Documents\\VSCode Projects\\dotnetgigs\\DotNetGigs.csproj",
+      "packagesPath": "C:\\Users\\ferna\\.nuget\\packages\\",
+      "outputPath": "c:\\Users\\ferna\\Documents\\VSCode Projects\\dotnetgigs\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\fer_s\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ferna\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
