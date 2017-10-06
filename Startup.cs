@@ -1,24 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using AutoMapper;
-using FluentValidation.AspNetCore;
 using DotNetGigs.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using FluentValidation.AspNetCore;
 using DotNetGigs.Models.Entities;
+using AutoMapper;
+using DotNetGigs.Auth;
+using DotNetGigs.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Net;
+using DotNetGigs.Helpers;
+using Microsoft.AspNetCore.Diagnostics;
+using DotNetGigs.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace DotNetGigs
 {
     public class Startup
     {
+        private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH"; // todo: get this from somewhere secure
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -36,6 +46,50 @@ namespace DotNetGigs
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("DotNetGigs")));
+
+            services.AddSingleton<IJwtFactory, JwtFactory>();
+
+            // jwt wire up
+            // Get options from app settings
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+
+            // Configure JwtIssuerOptions
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            });
+
+            // api user claim policy
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
+            });
+
+            services.AddAuthentication(jwt =>
+                {
+                jwt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                jwt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(jwt =>
+                {
+                jwt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+
+                    ValidateAudience = true,
+                    ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = _signingKey,
+
+                    RequireExpirationTime = false,
+                    ValidateLifetime = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+                });
 
             services.AddIdentity<AppUser, IdentityRole>
                 (o =>
@@ -64,6 +118,43 @@ namespace DotNetGigs
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseExceptionHandler(
+            builder =>
+            {
+                builder.Run(
+                  async context =>
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+                    var error = context.Features.Get<IExceptionHandlerFeature>();
+                    if (error != null)
+                    {
+                        context.Response.AddApplicationError(error.Error.Message);
+                        await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
+                    }
+                  });
+            });
+
+            var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+
+                ValidateAudience = true,
+                ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _signingKey,
+
+                RequireExpirationTime = false,
+                ValidateLifetime = false,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            app.UseAuthentication();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

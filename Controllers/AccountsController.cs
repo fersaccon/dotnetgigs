@@ -12,10 +12,9 @@ namespace DotNetGigs.Controllers
     [Route("api/[controller]")]
     public class AccountsController : Controller
     {
+        private readonly ApplicationDbContext _appDbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-
-        private readonly ApplicationDbContext _appDbContext;
 
         public AccountsController(UserManager<AppUser> userManager,IMapper mapper, ApplicationDbContext appDbContext)
         {
